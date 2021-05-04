@@ -1,7 +1,7 @@
 import logo from '../assets/logo.svg';
 import useRandomColor from '../hooks/useRandomColor';
 import '../styles/App.css';
-import {useEffect, useReducer} from "react";
+import {useReducer} from "react";
 import combineReducers from "react-combine-reducers";
 import buttonColorReducer from '../reducers/buttonColor';
 import colorsListReducer from '../reducers/colorsList';
@@ -13,7 +13,7 @@ function App() {
 
   const [stateReducer, initialState] = combineReducers({
     buttonColor: [buttonColorReducer, '#fff'],
-    colors: [colorsListReducer, new Set(["#fff"])]
+    colors: [colorsListReducer, new Set()]
   });
 
   const [state, dispatch] = useReducer(stateReducer, initialState);
@@ -25,14 +25,22 @@ function App() {
     });
   };
 
-  useEffect(() => console.log(state), [state]);
-
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" width="300" />
         <div>
           <button style={{ color: state.buttonColor }} className="button is-link" onClick={() => handleNewColor(getNextColor())}>Get some color</button>
+        </div>
+        <div>
+          <div className="title has-text-white mt-5">Colors used:</div>
+          <div className="colors-list is-flex is-flex-direction-column">
+            {[...state.colors].map(color => 
+              <div className={`is-size-4 ${color === state.buttonColor ? 'has-text-weight-bold' : 'has-text-weight-light'}`} style={{ color }} key={color}>
+                {color}
+              </div>
+            )}
+          </div>
         </div>
       </header>
     </div>
