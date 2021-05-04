@@ -22,7 +22,7 @@ const request = options => {
 
 export function getRandomColor() {
     return request({
-        url: RANDOM_COLOR_API_URL,
+        url: `${RANDOM_COLOR_API_URL}?${new Date().getTime()}`,
         method: 'GET'
     });
 };
