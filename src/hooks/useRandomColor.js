@@ -1,4 +1,4 @@
-import { getRandomColor } from "../util/APIUtils";
+import { getRandomColor } from "../util/apiUtils";
 
 const useRandomColor = () => {
 

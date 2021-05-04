@@ -1,8 +1,12 @@
 
 // ADD_COLOR
-const addColor = color => ({
+export const addColor = color => ({
     type: 'ADD_COLOR',
     color
 });
 
-export default addColor;
+// SET_COLORS
+export const setColors = colors => ({
+    type: 'SET_COLORS',
+    colors
+});

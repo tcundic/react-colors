@@ -5,8 +5,10 @@ import {useReducer} from "react";
 import combineReducers from "react-combine-reducers";
 import buttonColorReducer from '../reducers/buttonColor';
 import colorsListReducer from '../reducers/colorsList';
-import addColor from '../actions/colorsList';
+import { addColor } from '../actions/colorsList';
 import setButtonColor from '../actions/buttonColor';
+import ColorsList from '../components/ColorsList';
+import StateContext from '../context/stateContext';
 
 function App() {
   const [getNextColor] = useRandomColor();
@@ -20,30 +22,50 @@ function App() {
 
   const handleNewColor = newColor => {
     newColor.then(color => {
-      dispatch(addColor(`#${color}`));
-      dispatch(setButtonColor(`#${color}`));
+      if (color !== "") {
+        dispatch(addColor(`#${color}`));
+        dispatch(setButtonColor(`#${color}`));
+      }
     });
   };
 
+  const handleEnteredColor = e => {
+    if (e.key === 'Enter') {
+      if (/^#([0-9a-f]{3}|[0-9a-f]{6})$/i.test(e.target.value)) {
+        dispatch(addColor(`${e.target.value}`));
+        dispatch(setButtonColor(`${e.target.value}`));
+      } else {
+        alert('Entered color is not in a valid hex code.');
+      }
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" width="300" />
-        <div>
-          <button style={{ color: state.buttonColor }} className="button is-link" onClick={() => handleNewColor(getNextColor())}>Get some color</button>
-        </div>
-        <div>
-          <div className="title has-text-white mt-5">Colors used:</div>
-          <div className="colors-list is-flex is-flex-direction-column">
-            {[...state.colors].map(color => 
-              <div className={`is-size-4 ${color === state.buttonColor ? 'has-text-weight-bold' : 'has-text-weight-light'}`} style={{ color }} key={color}>
-                {color}
-              </div>
-            )}
+    <StateContext.Provider value={{state, dispatch}}>
+      <div className="App">
+        <header className="App-header">
+          <img src={logo} className="App-logo" alt="logo" width="300" />
+          <div>
+            <button style={{ color: state.buttonColor }} className="button is-link" onClick={() => handleNewColor(getNextColor())}>Get some color</button>
           </div>
-        </div>
-      </header>
-    </div>
+          <div>
+            <ColorsList colors={state.colors}/>
+            <div className="field is-horizontal">
+              <div className="field-label">
+                <label className="label has-text-white">Enter color</label>
+              </div>
+              <div className="field-body">
+                <div className="field">
+                  <p className="control is-expanded">
+                    <input className="input" type="text" placeholder="#xxxxxx" onKeyDown={handleEnteredColor} />
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+      </div>
+    </StateContext.Provider>
   );
 }
 

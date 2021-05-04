@@ -24,10 +24,6 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
@@ -36,3 +32,24 @@
     transform: rotate(360deg);
   }
 }
+
+.App .field-label .label {
+  font-size: 16px;
+}
+
+.App .field-label, .App .field-body {
+  flex-grow: 1;
+}
+
+.App .field {
+  align-items: center;
+}
+
+.App .placeholder {
+  background: rgba(50, 115, 220, .3);
+}
+
+.App .placeholder:before {
+    content: "Drop here";
+    color: rgba(255, 255, 255, .3);
+  }
