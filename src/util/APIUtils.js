@@ -1,4 +1,4 @@
-const RANDOM_COLOR_API_URL = 'https://cors-anywhere.herokuapp.com/https://www.colr.org/json/color/random';
+const RANDOM_COLOR_API_URL = 'http://localhost:5000/json/color/random';
 
 const request = options => {
     const headers = {
